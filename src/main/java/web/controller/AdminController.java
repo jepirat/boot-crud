@@ -35,7 +35,7 @@ public class AdminController {
     @PostMapping
     public String add(@ModelAttribute("user") User user) {
         Set<Role> roles = new HashSet<>();
-        roles.add(Role.USER);
+        roles.add(new Role("USER"));
         user.setRoles(roles);
         userRepo.save(user);
         return "redirect:/admin";
@@ -43,7 +43,8 @@ public class AdminController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") long id) {
-        model.addAttribute("list", Role.values());
+        Role[] roles = {new Role("ADMIN"), new Role("USER")};
+        model.addAttribute("list",roles);
         model.addAttribute("user", userRepo.findById(id).get());
         return "admin/edit";
     }
@@ -53,9 +54,10 @@ public class AdminController {
         System.out.println(role);
         Set<Role> roles = userRepo.findById(id).get().getRole();
         if (role != null && role.equals("ADMIN")) {
-            roles.add(Role.valueOf(role));
+            roles.add(new Role(role));
         } else if (role != null && role.equals("USER")) {
-            roles.remove(Role.ADMIN);
+            System.out.println("удаление роли");
+            roles.removeIf(role1 -> role1.getName().equals("ADMIN"));
         }
         user.setRoles(roles);
         userRepo.save(user);

@@ -7,6 +7,10 @@ import web.model.User;
 @Controller
 public class UserController {
     @GetMapping("/")
+    public String index() {
+        return "redirect:/user";
+    }
+    @GetMapping("/user")
     public String hello(Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         model.addAttribute("user", user);

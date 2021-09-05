@@ -10,8 +10,6 @@ import web.model.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-
 @Component
 public class SuccessUserHandler implements AuthenticationSuccessHandler {
     @Autowired
@@ -20,14 +18,18 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
        User user = (User) authentication.getPrincipal();
-       Collection<Role> roles = user.getRoles();
-        if (roles.contains(Role.ADMIN) && !roles.contains(Role.USER)) {
+       System.out.println(user);
+       Role role = new Role();
+       role.setName("ADMIN");
+       Role roleUser = new Role();
+       roleUser.setName("USER");
+        if (user.getRoles().contains(role) && !user.getRoles().contains(roleUser)) {
             System.out.println("Вошел как админ");
             httpServletResponse.sendRedirect("/admin");
-        } else if  (roles.contains(Role.USER) && !roles.contains(Role.ADMIN)) {
+        } else if  (user.getRoles().contains(roleUser) && !user.getRoles().contains(role)) {
             httpServletResponse.sendRedirect("/");
             System.out.println("вошел как пользователь");
-        } else if  (roles.contains(Role.USER) && roles.contains(Role.ADMIN)) {
+        } else if  (user.getRoles().contains(roleUser) && user.getRoles().contains(role)) {
             httpServletResponse.sendRedirect("/admin");
             System.out.println("вошел как admin");
         }

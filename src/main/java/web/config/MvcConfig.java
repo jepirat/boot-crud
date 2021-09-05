@@ -20,6 +20,10 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     UserRepo userRepo;
     public void addViewControllers(ViewControllerRegistry viewControllerRegistry) {
+//        Set<Role> roles = new HashSet<>();
+//       roles.add(new Role("USER"));
+//       User user = new User("u", "u", "u", "a", roles);
+//       userRepo.save(user);
         viewControllerRegistry.addViewController("/login").setViewName("login");
     }
 }
