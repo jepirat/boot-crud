@@ -18,7 +18,6 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
        User user = (User) authentication.getPrincipal();
-       System.out.println(user);
        Role role = new Role();
        role.setName("ADMIN");
        Role roleUser = new Role();
