@@ -4,38 +4,56 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        div.Wrapper *
+        {
+            color: white;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 10px 3px;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class="float-left">
-<ul class="nav flex-column">
-    <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#description">Описание</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#characteristics">Характеристики</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#opinion">Отзывы</a>
-    </li>
-</ul>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="Wrapper">
+        <div class="float-right">
+            <h>User has login - </h>
+            <h th:text="${currentUser.getLogin()}"/>
+            <h>with role : </h>
+            <h th:text="${currentUser.getRoles()}"/>
+        </div>
     </div>
 
-        <div class="float-right">
-<div class="tab-content">
-    <div class="float-left">
-    <div class="tab-pane fade show active" id="description">
-        Описание товара...
+    <div class="Wrapper">
+        <div class="float-left">
+            <a href="/logout">logout</a>
+        </div>
     </div>
-    <div class="tab-pane fade" id="characteristics">
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#user_table">User Table</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#new_user">New User</a>
-            </li>
-        </ul>
+</nav>
+<div class="float-left">
+<div class="container">
+    <div class="row no-gutters">
+
+<div class="col-2">
+<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-home" aria-selected="true">Admin</a>
+    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-profile" aria-selected="false">User</a>
+    </div>
+    </div>
+
+<div class="col">
+<div class="tab-content" id="v-pills-tabContent">
+    <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-home-tab"><ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#user_table">User Table</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#new_user">New User</a>
+        </li>
+    </ul>
 
         <div class="tab-content">
             <div class="tab-pane fade show active" id="user_table">
@@ -86,16 +104,13 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div></div>
+    <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+</div>
+</div>
     </div>
-    <div class="tab-pane fade" id="opinion">
-        Отзывы...
-    </div>
 </div>
 </div>
-</div>
-</div>
-
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
