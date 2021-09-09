@@ -9,7 +9,7 @@
     <button type="submit">Sign Out</button>
 </form>
 <form th:method="POST" th:action="@{/admin}" th:object="${user}">
-    <label for="login">Enter User Name</label>
+    <label for="login">Enter User Login</label>
     <input type="text" th:field="*{login}" id="login"/>
     <br/>
     <label for="FirstName">Enter First Name</label>

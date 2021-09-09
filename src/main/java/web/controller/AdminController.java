@@ -2,6 +2,7 @@ package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,11 @@ public class AdminController {
     UserRepo userRepo;
 
     @GetMapping
-    public String usersController(Model model) {
+    public String usersController(Model model, Authentication authentication) {
         List<User> users = userRepo.findAll();
         model.addAttribute("userList", users);
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("currentUser", user);
         return "admin/index";
     }
 
