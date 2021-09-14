@@ -25,7 +25,7 @@
     <input type="text" th:field="*{password}" id="password"/>
     <br/>
     <th:block th:each="l : ${list}">
-    <input type="checkbox" name="role" th:value="${l}" th:text="${l}"/>
+    <input type="radio" name="role" th:value="${l}" th:text="${l}"/>
     </th:block>
     <br/>
     <input type="submit" value="Update!"/>

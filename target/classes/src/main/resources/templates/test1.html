@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,9 +10,25 @@
             color: white;
         }
 
+        .deleteColor{
+            background-color:#DC143C;
+        }
+
+        .editColor {
+            background-color:#2E8B57;
+        }
+
+        .tabi {
+            display: table;
+        }
+
+        .colorPole {
+            background-color:#FFEFD5;
+        }
+
         table {
             border-collapse: separate;
-            border-spacing: 10px 3px;
+            border-spacing: 15px 5px;
         }
     </style>
 </head>
@@ -55,9 +71,9 @@
     </ul>
 
         <div class="tab-content">
-            <div class="tab-pane fade show active" id="user_table">
+            <div class="tab-pane fade show active tabi" id="user_table">
                 All Users
-                <div>
+                <div class="colorPole">
                     <table>
                         <tr>
                             <th>ID</th>
@@ -74,10 +90,109 @@
                             <td th:text="${user.getFirstName()}">model</td>
                             <td th:text="${user.getLastName()}">model</td>
                             <td th:text="${user.getRole()}">Role</td>
-                            <td><a th:href="@{/admin/{id}/edit (id =${user.getId()})}">Update</a> </td>
-                            <form th:method="DELETE" th:action="@{/admin/{id} (id =${user.getId()})}">
-                                <td><input type="submit" value="DELETE"/></td>
-                            </form>
+                            <div class="modal fade" th:id="'editUser' + ${user.getId()} " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="modal-body">
+                                                <form method="POST" action="/test1">
+                                                    <label for="id">User Id</label>
+                                                    </br>
+                                                    <input type="text" name="id" readonly th:value="${user.getId()}" id="id"/>
+                                                    </br>
+                                                    <label for="login">Enter User Name</label>
+                                                    </br>
+                                                    <input type="text" name="login" th:value="${user.getLogin()}" id="login"/>
+                                                    </br>
+                                                    <label for="FirstName">Enter First Name</label>
+                                                    </br>
+                                                    <input type="text" name="fn" th:value="${user.getFirstName()}" id="FirstName"/>
+                                                    </br>
+                                                    <label for="LastName">Enter Last Name</label>
+                                                    </br>
+                                                    <input type="text" name="ln" th:value="${user.getLastName()}" id="LastName"/>
+                                                    </br>
+                                                    <label for="password">Enter Password</label>
+                                                    </br>
+                                                    <input type="password" name="pass" th:value="${user.getPassword()}" id="password"/>
+                                                    </br>
+                                                    <input type="hidden" name="action" value="save">
+                                                    <th:block th:each="l : ${list}">
+                                                        <input type="radio" name="role" th:value="${l}" th:text="${l}"/>
+                                                    </th:block>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit"  class="btn btn-primary">EDIT</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <td>
+                                <button type="button" class="btn btn-primary editColor" data-toggle="modal" th:href="@{'#editUser' + ${user.getId()}}">
+                                    Edit
+                                </button>
+                            </td>
+                            <td><div class="modal fade" th:id="'deleteUser' + ${user.getId()} " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label">Delete User</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="modal-body">
+                                                <form method="POST" action="/test1">
+                                                    <label for="id">User Id</label>
+                                                    </br>
+                                                    <input type="text" name="id" readonly th:value="${user.getId()}" />
+                                                    </br>
+                                                    <label for="login">Enter User Name</label>
+                                                    </br>
+                                                    <input type="text" name="login" readonly th:value="${user.getLogin()}" />
+                                                    </br>
+                                                    <label for="FirstName">Enter First Name</label>
+                                                    </br>
+                                                    <input type="text" name="fn" readonly th:value="${user.getFirstName()}"/>
+                                                    </br>
+                                                    <label for="LastName">Enter Last Name</label>
+                                                    </br>
+                                                    <input type="text" name="ln" readonly th:value="${user.getLastName()}"/>
+                                                    </br>
+                                                    <label for="password">Enter Password</label>
+                                                    </br>
+                                                    <input type="password" name="pass" readonly th:value="${user.getPassword()}"/>
+                                                    </br>
+                                                    <input type="hidden" name="action" value="delete">
+                                                    <th:block th:each="l : ${user.getRoles()}">
+                                                        <input type="radio" readonly name="role" th:value="${l}" th:text="${l}"/>
+                                                    </th:block>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit"  class="btn btn-primary deleteColor">DELETE</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                                <button type="button" class="btn btn-primary deleteColor" data-toggle="modal" th:href="@{'#deleteUser' + ${user.getId()}}">
+                                    DELETE
+                                </button>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -85,21 +200,30 @@
 
             <div class="tab-pane fade" id="new_user">
                 New User
-                <div>
-                    <form th:method="POST" th:action="@{/admin}" th:object="${user}">
+                <div class="text-center">
+                    <form method="POST" action="/test1">
                         <label for="login">Enter User Login</label>
-                        <input type="text" th:field="*{login}" id="login"/>
+                        </br>
+                        <input type="text" name="login"/>
                         <br/>
                         <label for="FirstName">Enter First Name</label>
-                        <input type="text" th:field="*{firstName}" id="FirstName"/>
+                        </br>
+                        <input type="text" name="fn"/>
                         <br/>
                         <label for="LastName">Enter Last Name</label>
-                        <input type="text" th:field="*{lastName}" id="LastName"/>
+                        </br>
+                        <input type="text" name="ln"/>
                         <br/>
                         <label for="password">Enter Password</label>
-                        <input type="text" th:field="*{password}" id="password"/>
+                        </br>
+                        <input type="password" name="pass"/>
                         <br/>
-                        <input type="submit" value="Create!"/>
+                        </br>
+                        <input type="hidden" name="action" value="new">
+                        </br>
+                        <button type="submit" class="btn btn-primary editColor">
+                            Add new user
+                        </button>
                     </form>
                 </div>
             </div>

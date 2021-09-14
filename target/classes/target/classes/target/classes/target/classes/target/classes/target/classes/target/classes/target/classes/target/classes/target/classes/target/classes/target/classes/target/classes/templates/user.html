@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Sign Out</button>
+</form>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Role</th>
+        <th>Login</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+        <td th:text="${user.getId()}">model</td>
+        <td th:text="${user.getLogin()}">nick_name</td>
+        <td th:text="${user.getFirstName()}">model</td>
+        <td th:text="${user.getLastName()}">model</td>
+        <td th:text="${user.getRole()}">Role</td>
+</table>
+</body>
+</html>
