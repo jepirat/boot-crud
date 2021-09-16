@@ -22,6 +22,9 @@ public class Test1Controller {
     @GetMapping("/test1")
     public String test(Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
+        if (user.getRoles().contains(new Role("ADMIN"))) {
+
+        }
         model.addAttribute("currentUser", user);
         List<User> users = userRepo.findAll();
         model.addAttribute("userList", users);
@@ -39,6 +42,7 @@ public class Test1Controller {
                            @RequestParam(name = "pass", required = false) String pass,
                            @RequestParam(name = "role", required = false) String role,
                            @RequestParam(name = "action", required = false) String action) {
+        System.out.println(role);
         Set<Role> roles = new HashSet<>();
         if (id != null) {
             roles = userRepo.findById(id).get().getRole();
@@ -46,9 +50,10 @@ public class Test1Controller {
                 roles.add(new Role(role));
             } else if (role != null && role.equals("USER")) {
                 System.out.println("удаление роли");
-                roles.removeIf(role1 -> role1.getName().equals("ADMIN"));
+                roles.remove(new Role("ADMIN"));
             }
         }
+        roles.add(new Role("USER"));
         User user = new User();
         user.setId(id);
         user.setLogin(login);

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<input type="hidden" id="t" th:value="${status}">
+<div sec:authorize="hasAuthority('ADMIN')">Text visible to admin.</div>
+<!--<script>-->
+
+<!--    var st = document.getElementsByName(t);-->
+
+<!--    if (st == 'show') {-->
+<!--        document.getElementById('t').hidden = false-->
+<!--    }-->
+<!--    else {-->
+<!--        document.getElementById('t').hidden = true-->
+<!--    }-->
+<!--</script>-->
+<!--<div id="test" aria-hidden="true">-->
+<!--    <h1 th:text="${status}"></h1>-->
+<!--</div>-->
+
+</body>
+</html>

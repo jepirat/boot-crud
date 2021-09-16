@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -17,22 +20,10 @@
         .editColor {
             background-color:#2E8B57;
         }
-
-        .tabi {
-            display: table;
-        }
-
-        .colorPole {
-            background-color:#FFEFD5;
-        }
-
-        table {
-            border-collapse: separate;
-            border-spacing: 15px 5px;
-        }
     </style>
 </head>
 <body>
+
 <nav class="navbar navbar-dark bg-dark">
     <div class="Wrapper">
         <div class="float-right">
@@ -43,6 +34,10 @@
         </div>
     </div>
 
+    <div class="row" th:if="${#request.isUserInRole('ADMN')}">
+        <h2>This will only be displayed if authenticated user has role ROLE_SUPERUSER.</h2>
+    </div>
+
     <div class="Wrapper">
         <div class="float-left">
             <a href="/logout">logout</a>
@@ -50,7 +45,7 @@
     </div>
 </nav>
 
-
+<div sec:authorize="hasAuthority('ROLE_ADMIN')">
 <div class="row no-gutters">
 <div class="col-2">
 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -59,6 +54,7 @@
     </div>
     </div>
 <div class="col">
+    <div sec:authorize="hasAuthority('ROLE_ADMIN')">
 <div class="tab-content" id="v-pills-tabContent">
     <h1>Admin Panel</h1>
     <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-home-tab"><ul class="nav nav-tabs">
@@ -71,19 +67,22 @@
     </ul>
 
         <div class="tab-content">
-            <div class="tab-pane fade show active tabi" id="user_table">
+            <div class="tab-pane fade show active" id="user_table">
                 All Users
-                <div class="colorPole">
-                    <table>
+                <div>
+                    <table class="table">
+                        <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
                             <th>LastName</th>
                             <th>Login</th>
                             <th>Role</th>
-                            <th>Update</th>
+                            <th>Edit</th>
                             <th>Delete</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr th:each="user : ${userList}">
                             <td th:text="${user.getId()}">model</td>
                             <td th:text="${user.getLogin()}">Login</td>
@@ -133,8 +132,6 @@
                                                 </form>
                                             </div>
                                         </div>
-
-                                    </div>
                                 </div>
                             </div>
                             <td>
@@ -193,7 +190,9 @@
                                     DELETE
                                 </button>
                             </td>
+                            </div>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -228,11 +227,42 @@
                 </div>
             </div>
         </div></div>
-    <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
-</div>
+
+    <!-- Таблица пользователя -->
+    <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Sign Out</button>
+        </form>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Login</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td th:text="${currentUser.getId()}">model</td>
+            <td th:text="${currentUser.getLogin()}">nick_name</td>
+            <td th:text="${currentUser.getFirstName()}">model</td>
+            <td th:text="${currentUser.getLastName()}">model</td>
+            <td th:text="${currentUser.getRole()}">Role</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
     </div>
+</div>
+    </div>
+</div>
 
+<div class="row" th:if="${#request.isUserInRole('USER')}">
+    <h2>This will only be displayed if authenticated user has role ROLE_SUPERUSER.</h2>
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

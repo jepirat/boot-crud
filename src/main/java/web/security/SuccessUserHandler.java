@@ -24,12 +24,12 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
        roleUser.setName("USER");
         if (user.getRoles().contains(role) && !user.getRoles().contains(roleUser)) {
             System.out.println("Вошел как админ");
-            httpServletResponse.sendRedirect("/admin");
+            httpServletResponse.sendRedirect("/test1");
         } else if  (user.getRoles().contains(roleUser) && !user.getRoles().contains(role)) {
-            httpServletResponse.sendRedirect("/");
+            httpServletResponse.sendRedirect("/test1");
             System.out.println("вошел как пользователь");
         } else if  (user.getRoles().contains(roleUser) && user.getRoles().contains(role)) {
-            httpServletResponse.sendRedirect("/admin");
+            httpServletResponse.sendRedirect("/test1");
             System.out.println("вошел как admin");
         }
     }
