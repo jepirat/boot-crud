@@ -10,13 +10,7 @@ import web.model.User;
 @Controller
 public class DivController {
     @GetMapping("/div")
-    public String getGet(Model model, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        if (user.getRoles().contains(new Role("ADMIN"))) {
-            model.addAttribute("status", "show");
-        } else {
-            model.addAttribute("status", "hide");
-        }
+    public String getGet(Model model) {
         return "div";
     }
 }
