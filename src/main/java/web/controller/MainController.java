@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-public class Test1Controller {
+public class MainController {
     @Autowired
     UserRepo userRepo;
-    @GetMapping("/test1")
+    @GetMapping("/index")
     public String test(Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         if (user.getRoles().contains(new Role("ADMIN"))) {
@@ -33,10 +33,10 @@ public class Test1Controller {
         model.addAttribute("user", new User());
         Role[] roles = {new Role("ADMIN"), new Role("USER")};
         model.addAttribute("list",roles);
-        return "test1";
+        return "index";
     }
 
-    @PostMapping("/test1")
+    @PostMapping("/index")
     public String testPost(@RequestParam(name = "id", required = false) Long id,
                            @RequestParam(name = "login", required = false) String login,
                            @RequestParam(name = "fn", required = false) String fn,
@@ -68,6 +68,6 @@ public class Test1Controller {
         } else {
             userRepo.save(user);
         }
-        return "redirect:/test1";
+        return "redirect:/index";
     }
 }
