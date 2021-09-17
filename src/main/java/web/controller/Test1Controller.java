@@ -23,7 +23,9 @@ public class Test1Controller {
     public String test(Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         if (user.getRoles().contains(new Role("ADMIN"))) {
-
+            model.addAttribute("status", "ADMIN");
+        } else {
+            model.addAttribute("status", "USER");
         }
         model.addAttribute("currentUser", user);
         List<User> users = userRepo.findAll();

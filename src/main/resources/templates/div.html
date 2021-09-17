@@ -9,7 +9,7 @@
 </head>
 <body>
 <input type="hidden" id="t" th:value="${status}">
-<div sec:authorize="hasAuthority('ADMIN')">Text visible to admin.</div>
+<div th:if="${status} == 'ADMIN'"> Test Admin</div>
 <!--<script>-->
 
 <!--    var st = document.getElementsByName(t);-->
