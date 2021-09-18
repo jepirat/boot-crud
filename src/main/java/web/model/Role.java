@@ -1,4 +1,5 @@
 package web.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "role_id", nullable = false )
     private long id;
     private String name;
+    @Transient
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
     private Set<User> userSet = new HashSet<>();
 
