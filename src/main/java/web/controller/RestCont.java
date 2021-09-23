@@ -20,6 +20,7 @@ public class RestCont {
         List<UsesProxy> userPojos = new ArrayList<>();
         List<User> users = userRepo.findAll();
         users.stream().forEach(u -> userPojos.add(new UsesProxy(u)));
+        userPojos.forEach(u -> System.out.println(u.getId()));
         return userPojos;
     }
 }

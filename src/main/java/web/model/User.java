@@ -28,6 +28,7 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+
     @JsonIgnore
     @Fetch(FetchMode.JOIN)
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY )

@@ -13,15 +13,22 @@
         </tbody>
     </table>
 </div>
-
+<h1 id="test"></h1>
 <script th:src="@{/js/test.js}"></script>
-<script>
-    const js = sendRequest('GET', '/users')
-    for (i = 0; i < js.length; i++) {
-        js.then(r => console.log(r[0]['login']))
-    }
+<!--<script>-->
 
-</script>
+<!--    var js =  sendRequest('GET', '/users').then(user => {return user})-->
+<!--    var y = []-->
+<!--    //js.then(y => console.log(y[0]))-->
+<!--    js.then(data => printData(data))-->
+<!--    function printData(data) {-->
+<!--            for (var i = 0; i < data.length; i++) {-->
+<!--                y.push(data[i])-->
+<!--            }-->
+<!--    }-->
+
+<!--    console.log('massiv', y)-->
+<!--</script>-->
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
