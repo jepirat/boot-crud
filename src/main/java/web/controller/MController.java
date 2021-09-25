@@ -58,10 +58,20 @@ public class MController {
         return "index";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id, @RequestParam(name = "role", required = false) String role) {
+    @PatchMapping
+    public String update(@ModelAttribute("user") User user,
+                         @RequestParam(name = "role", required = false) String role,
+                         Model model, Authentication authentication) {
+        User user1 = (User) authentication.getPrincipal();
+        List<User> users = userRepo.findAll();
+        if (user1.getRoles().contains(new Role("ADMIN"))) {
+            model.addAttribute("status", "ADMIN");
+        } else {
+            model.addAttribute("status", "USER");
+        }
+        System.out.println(user);
         System.out.println(role);
-        Set<Role> roles = userRepo.findById(id).get().getRole();
+        Set<Role> roles = userRepo.findById(user.getId()).get().getRole();
         if (role != null && role.equals("ADMIN")) {
             roles.add(new Role(role));
         } else if (role != null && role.equals("USER")) {

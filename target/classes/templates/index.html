@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -27,13 +29,11 @@
     <div class="Wrapper">
         <div class="float-right">
             <h>User has login - </h>
-            <h th:text="${currentUser.getLogin()}"/>
+            <h th:text="${#request.userPrincipal.principal.login}"/>
             <h>with role : </h>
-            <h th:text="${currentUser.getRoles()}"/>
+            <h th:text="${#request.userPrincipal.principal.roles}"/>
         </div>
     </div>
-
-
 
     <div class="Wrapper">
         <div class="float-left">
@@ -46,15 +46,15 @@
 <div class="row no-gutters" >
 <div class="col-2">
 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-    <a th:if="${status} == 'ADMIN'" class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-home" aria-selected="true">Admin</a>
+    <a sec:authorize=”hasAuthority('ADMIN')” class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-home" aria-selected="true">Admin</a>
     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-profile" aria-selected="false">User</a>
     </div>
     </div>
 <div class="col">
     <div>
 <div class="tab-content" id="v-pills-tabContent">
-    <h1 th:if="${status} == 'ADMIN'">Admin Panel</h1>
-    <div th:if="${status} == 'ADMIN'" class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-home-tab"><ul class="nav nav-tabs">
+    <h1 sec:authorize="hasAuthority('ADMIN')">Admin Panel</h1>
+    <div sec:authorize=”hasAuthority('ADMIN')” class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-home-tab"><ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#user_table">User Table</a>
         </li>
@@ -80,7 +80,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="user : ${userList}">
+                        <tr th:each="user : ${userList}" th:object="${user}">
                             <td th:text="${user.getId()}">model</td>
                             <td th:text="${user.getLogin()}">Login</td>
                             <td th:text="${user.getFirstName()}">model</td>
@@ -98,21 +98,21 @@
                                         </div>
                                         <div class="text-center">
                                             <div class="modal-body">
-                                                <form th:method="PATCH" th:action="@{/index/{id}(id=${user.getId()})}" th:object="${user}">
+                                                <form action="#" th:action="@{/index}" th:method="PATCH">
                                                     <label for="id">User Id</label>
-                                                    <input type="text" readonly th:value="${user.getId()}" id="id"/>
+                                                    <input type="text" th:name="id" readonly th:value="${user.getId()}" id="id"/>
                                                     <br/>
                                                     <label for="login1">Enter User Name</label>
-                                                    <input type="text" th:value="*{login}" id="login1"/>
+                                                    <input type="text" th:name="login" th:value="${user.getLogin()}" id="login1"/>
                                                     <br/>
                                                     <label for="FirstName1">Enter First Name</label>
-                                                    <input type="text" th:value="*{firstName}" id="FirstName1"/>
+                                                    <input type="text" th:name="firstName" th:value="${user.getFirstName()}" id="FirstName1"/>
                                                     <br/>
                                                     <label for="LastName1">Enter Last Name</label>
-                                                    <input type="text" th:value="*{lastName}" id="LastName1"/>
+                                                    <input type="text" th:name="lastName" th:value="${user.getLastName()}" id="LastName1"/>
                                                     <br/>
                                                     <label for="password1">Enter Password</label>
-                                                    <input type="text" th:value="*{password}" id="password1"/>
+                                                    <input type="text" th:name="password" th:value="${user.getPassword()}" id="password1"/>
                                                     <br/>
                                                     <th:block th:each="l : ${list}">
                                                         <input type="radio" name="role" th:value="${l}" th:text="${l}"/>
@@ -196,16 +196,16 @@
                 <div class="text-center">
                     <form th:method="POST" th:action="@{/index}" th:object="${emptyUser}">
                         <label for="login">Enter User Name</label>
-                        <input type="text" th:field="*{login}" id="login"/>
+                        <input type="text" th:name="login" th:value="*{login}" id="login"/>
                         <br/>
                         <label for="FirstName">Enter First Name</label>
-                        <input type="text" th:field="*{firstName}" id="FirstName"/>
+                        <input type="text" th:name="firstName" th:value="*{firstName}" id="FirstName"/>
                         <br/>
                         <label for="LastName">Enter Last Name</label>
-                        <input type="text" th:field="*{lastName}" id="LastName"/>
+                        <input type="text" th:name="lastName" th:value="*{lastName}" id="LastName"/>
                         <br/>
                         <label for="password">Enter Password</label>
-                        <input type="text" th:field="*{password}" id="password"/>
+                        <input type="text" th:name="password" th:value="*{password}" id="password"/>
                         <br/>
                         <button type="submit" class="btn btn-primary editColor">
                             Add new user
@@ -213,7 +213,8 @@
                     </form>
                 </div>
             </div>
-        </div></div>
+        </div>
+    </div>
 
     <!-- Подушка пользователя -->
     <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">
@@ -232,11 +233,11 @@
             </thead>
             <tbody>
             <tr>
-            <td th:text="${currentUser.getId()}">model</td>
-            <td th:text="${currentUser.getLogin()}">nick_name</td>
-            <td th:text="${currentUser.getFirstName()}">model</td>
-            <td th:text="${currentUser.getLastName()}">model</td>
-            <td th:text="${currentUser.getRole()}">Role</td>
+            <td th:text="${#request.userPrincipal.principal.id}">model</td>
+            <td th:text="${#request.userPrincipal.principal.login}">nick_name</td>
+            <td th:text="${#request.userPrincipal.principal.firstName}">model</td>
+            <td th:text="${#request.userPrincipal.principal.lastName}">model</td>
+            <td th:text="${#request.userPrincipal.principal.roles}">Role</td>
             </tr>
             </tbody>
         </table>
