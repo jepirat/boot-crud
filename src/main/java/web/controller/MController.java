@@ -8,7 +8,6 @@ import web.model.Role;
 import web.model.User;
 import web.repos.RoleRepo;
 import web.repos.UserRepo;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,13 +24,11 @@ public class MController {
     }
 
     @GetMapping
-    public String usersController(Model model, Authentication authentication) {
+    public String usersController(Model model) {
         List<User> users = userRepo.findAll();
         model.addAttribute("userList", users);
-        model.addAttribute("emptyUser", new User());
         Role[] roles = {new Role("ADMIN"), new Role("USER")};
         model.addAttribute("list",roles);
-
         return "index";
     }
 
