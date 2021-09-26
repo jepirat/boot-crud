@@ -80,7 +80,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="user : ${userList}" th:object="${user}">
+                        <tr th:each="user : ${userList}">
                             <td th:text="${user.getId()}">model</td>
                             <td th:text="${user.getLogin()}">Login</td>
                             <td th:text="${user.getFirstName()}">model</td>
@@ -143,26 +143,26 @@
                                         </div>
                                         <div class="text-center">
                                             <div class="modal-body">
-                                                <form method="POST" action="/index">
+                                                <form th:method="DELETE" th:action="@{/index/{id} (id =${user.getId()})}">
                                                     <label for="id">User Id</label>
                                                     </br>
-                                                    <input type="text" name="id" readonly th:value="${user.getId()}" />
+                                                    <input type="text" th:name="id" readonly th:value="${user.getId()}" />
                                                     </br>
                                                     <label for="login">Enter User Name</label>
                                                     </br>
-                                                    <input type="text" name="login" readonly th:value="${user.getLogin()}" />
+                                                    <input type="text" th:name="login" readonly th:value="${user.getLogin()}" />
                                                     </br>
                                                     <label for="FirstName">Enter First Name</label>
                                                     </br>
-                                                    <input type="text" name="fn" readonly th:value="${user.getFirstName()}"/>
+                                                    <input type="text" th:name="fn" readonly th:value="${user.getFirstName()}"/>
                                                     </br>
                                                     <label for="LastName">Enter Last Name</label>
                                                     </br>
-                                                    <input type="text" name="ln" readonly th:value="${user.getLastName()}"/>
+                                                    <input type="text" th:name="ln" readonly th:value="${user.getLastName()}"/>
                                                     </br>
                                                     <label for="password">Enter Password</label>
                                                     </br>
-                                                    <input type="password" name="pass" readonly th:value="${user.getPassword()}"/>
+                                                    <input type="password" th:name="pass" readonly th:value="${user.getPassword()}"/>
                                                     </br>
                                                     <input type="hidden" name="action" value="delete">
                                                     <th:block th:each="l : ${user.getRoles()}">
@@ -194,18 +194,18 @@
             <div class="tab-pane fade" id="new_user">
                 New User
                 <div class="text-center">
-                    <form th:method="POST" th:action="@{/index}" th:object="${emptyUser}">
+                    <form th:method="POST" th:action="@{/index}">
                         <label for="login">Enter User Name</label>
-                        <input type="text" th:name="login" th:value="*{login}" id="login"/>
+                        <input type="text" th:name="login"  id="login"/>
                         <br/>
                         <label for="FirstName">Enter First Name</label>
-                        <input type="text" th:name="firstName" th:value="*{firstName}" id="FirstName"/>
+                        <input type="text" th:name="firstName"  id="FirstName"/>
                         <br/>
                         <label for="LastName">Enter Last Name</label>
-                        <input type="text" th:name="lastName" th:value="*{lastName}" id="LastName"/>
+                        <input type="text" th:name="lastName"  id="LastName"/>
                         <br/>
                         <label for="password">Enter Password</label>
-                        <input type="text" th:name="password" th:value="*{password}" id="password"/>
+                        <input type="text" th:name="password" id="password"/>
                         <br/>
                         <button type="submit" class="btn btn-primary editColor">
                             Add new user
@@ -247,11 +247,6 @@
 </div>
     </div>
 </div>
-
-<div class="row" th:if="${#request.isUserInRole('USER')}">
-    <h2>This will only be displayed if authenticated user has role ROLE_SUPERUSER.</h2>
-</div>
-
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
