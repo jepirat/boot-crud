@@ -111,7 +111,6 @@ async function getModal() {
         headers: {"Content-Type": "application/json; charset=utf8"}
     });
     let us3 = await us2.json()
-
     let userLength = users.length
     let userResp = new User()
     userResp.id = us3.id

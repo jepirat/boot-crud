@@ -33,14 +33,10 @@ public class RestCont {
     }
 
     @RequestMapping(value = "", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-    public ResponseEntity<User> patchUser(@RequestBody @Valid User user) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public UsesProxy patchUser(@RequestBody @Valid User user) {
         user.getRole().forEach(role -> roleRepo.save(role));
         userRepo.save(user);
         System.out.println(user);
-        return new  ResponseEntity<>(user, httpHeaders, HttpStatus.CREATED);
+        return new UsesProxy(user);
     }
 }
