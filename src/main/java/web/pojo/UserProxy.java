@@ -1,8 +1,6 @@
 package web.pojo;
-
 import web.model.User;
-
-public class UsesProxy {
+public class UserProxy {
   private Long id;
   private String login;
   private String firstName;
@@ -10,7 +8,7 @@ public class UsesProxy {
   private String password;
   private String roles;
 
-    public UsesProxy(User user) {
+    public UserProxy(User user) {
         this.id = user.getId();
         this.login = user.getLogin();
         this.firstName = user.getFirstName();

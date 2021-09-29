@@ -1,6 +1,7 @@
 const url = '/users';
 let users = []
 let buttonsIdsEdit = []
+let buttonsIdsDelete = []
 
 class User {
     id
@@ -72,15 +73,19 @@ async function setRowsAndButtons() {
             $('#usersTable > tbody tr:last-child').append(`<td id="td${i}">${users[j][row[i]]}</td>`)
         }
         $('#usersTable > tbody tr:last-child')
-            .append(`<td><button onclick="test(this)" id="edit${j}" type="button" class="btn btn-primary editColor" data-toggle="modal" href="#tm">Edit</button></td>`)
+            .append(`<td><button onclick="modalValues(this)" id="edit${j}" type="button" class="btn btn-primary editColor" data-toggle="modal" href="#tm">Edit</button></td>`)
+        $('#usersTable > tbody tr:last-child')
+            .append(`<td><button onclick="modalValues1(this)" id="delete${j}" type="button" class="btn btn-primary deleteColor" data-toggle="modal" href="#tm1">DELETE</button></td>`)
+
         buttonsIdsEdit.push('edit' + j)
+        buttonsIdsDelete.push('delete' + j)
     }
 }
 
-async function test(button) {
+async function modalValues(button) {
     await sendRequest;
     let buttonId = button
-    let user = await users[await getIndex(buttonId)];
+    let user = await users[await getIndex(buttonId, buttonsIdsEdit)];
     document.querySelector('#id').value =  user['id'];
     document.querySelector('#login').value =  user['login'];
     document.querySelector('#FirstName').value = user['firstName'];
@@ -88,7 +93,18 @@ async function test(button) {
     document.querySelector('#password').value = user['password'];
 }
 
-async function getModal() {
+async function modalValues1(button) {
+    await sendRequest;
+    let buttonId = button
+    let user = await users[await getIndex(buttonId, buttonsIdsDelete)];
+    document.querySelector('#id1').value =  user['id'];
+    document.querySelector('#login1').value =  user['login'];
+    document.querySelector('#FirstName1').value = user['firstName'];
+    document.querySelector('#LastName1').value =  user['lastName'];
+    document.querySelector('#password1').value = user['password'];
+}
+
+async function editModal() {
     let roles = []
     let role
     if (document.querySelector('input[name="r1"]:checked').value !== '' && document.querySelector('input[name="r1"]:checked').value !== null) {
@@ -130,14 +146,35 @@ async function getModal() {
 }
 
 
+async function deleteUser() {
+    let newUsers = []
+    let usersLength = users.length
+   let userId = document.querySelector('#id1').value
+    let url = `/users/${userId}`
+    let user = await fetch(url, {method: 'DELETE'})
+    let user1 = await user.json()
+    let userResp1 = new User()
+    userResp1.id = user1.id
+    userResp1.login = user1.login
+    userResp1.firstName = user1.firstName
+    userResp1.lastName = user1.lastName;
+    userResp1.password = user1.password
+    userResp1.roles = await user1.roles
+    for (let i = 0; i < usersLength; i++) {
+        if (users[i].id === userResp1.id) {
+            continue
+        }
+        newUsers.push(users[i])
+    }
+    users = newUsers
+}
 
-
-async function getIndex(buttonId) {
-    let length = buttonsIdsEdit.length
+async function getIndex(buttonId, buttonsIds) {
+    let length = buttonsIds.length
     let bId = await buttonId.id
     console.log(buttonsIdsEdit[0])
     for (let i = 0; i < length; i++) {
-        if (bId === buttonsIdsEdit[i]) {
+        if (bId === buttonsIds[i]) {
             return i
         }
     }
