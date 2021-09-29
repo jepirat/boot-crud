@@ -1,5 +1,8 @@
 package web.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -14,8 +17,11 @@ public class Role implements GrantedAuthority {
     @Column(name = "role_id", nullable = false )
     private long id;
     private String name;
+
     @Transient
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
+    @JsonIgnore
+    @Fetch(FetchMode.JOIN)
+    @ManyToMany(mappedBy = "roles")
     private Set<User> userSet = new HashSet<>();
 
     public Role() {

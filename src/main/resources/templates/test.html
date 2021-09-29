@@ -24,6 +24,7 @@
         <th>Role</th>
         <th>Edit</th>
         <th>Delete</th>
+    </tr>
     </thead>
     <tbody>
     </tbody>
@@ -41,7 +42,7 @@
 
             <div class="text-center">
                 <div class="modal-body">
-                    <form method="POST" action="/index">
+                    <form name="modForm">
                         <label for="id">User Id</label>
                         </br>
                         <input type="text" name="id" readonly value="" id="id"/>
@@ -62,13 +63,16 @@
                         </br>
                         <input type="password" name="pass" value="" id="password"/>
                         </br>
+
+                        <input name="r1" id="USER" type="radio" value="USER" checked> USER
+                        <input name="r1" id="ADMIN" type="radio" value="ADMIN"> ADMIN
 <!--                        <input type="hidden" name="action" value="save">-->
                         <!--                                                                    <th:block th:each="l : ${list}">-->
                         <!--                                                                        <input type="radio" name="role" th:value="${l}" th:text="${l}"/>-->
                         <!--                                                                    </th:block>-->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit"  class="btn btn-primary">EDIT</button>
+                            <button type="button" onclick="getModal()"  class="btn btn-primary">EDIT</button>
                         </div>
                     </form>
                 </div>

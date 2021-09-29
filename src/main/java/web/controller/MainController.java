@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import web.model.Role;
 import web.model.User;
+import web.repos.RoleRepo;
 import web.repos.UserRepo;
 
 import java.util.HashSet;
@@ -17,8 +18,16 @@ import java.util.Set;
 
 @Controller
 public class MainController {
-    @Autowired
+    final
     UserRepo userRepo;
+    final
+    RoleRepo roleRepo;
+
+    public MainController(UserRepo userRepo, RoleRepo roleRepo) {
+        this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
+    }
+
     @GetMapping("/index")
     public String test(Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
@@ -55,7 +64,10 @@ public class MainController {
                 roles.remove(new Role("ADMIN"));
             }
         }
-        roles.add(new Role("USER"));
+        Role role1 = new Role("USER");
+        roleRepo.save(role1);
+        roles.add(role1);
+
         User user = new User();
         user.setId(id);
         user.setLogin(login);
@@ -64,6 +76,7 @@ public class MainController {
         user.setPassword(pass);
         user.setRoles(roles);
         if (action.equals("delete")) {
+           // user.getRole().stream().forEach(role1 -> {roleRepo.flush(); roleRepo.delete(role1)});
             userRepo.delete(user);
         } else {
             userRepo.save(user);
