@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import web.model.User;
 
 @Controller
-public class OController {
-    @GetMapping("/to")
+public class Test1Controller {
+    @GetMapping("/test1")
     public String getTo(Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         model.addAttribute("currentUser", user);
-        return "to";
+        return "test1";
     }
-
 }

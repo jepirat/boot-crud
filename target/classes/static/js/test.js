@@ -68,9 +68,9 @@ async function setRowsAndButtons() {
     let usersLength = users.length
 
     for (let j = 0; j < usersLength; j++) {
-        $('#usersTable > tbody:last-child').append(`<tr id="tr${j}"></tr>`);
+        $('#usersTableBody:last-child').append(`<tr id="tr${j}"></tr>`);
         for (let i = 0; i < rowLength; i++) {
-            $('#usersTable > tbody tr:last-child').append(`<td id="td${i}">${users[j][row[i]]}</td>`)
+            $('#usersTableBody tr:last-child').append(`<td id="td${i}">${users[j][row[i]]}</td>`)
         }
         $('#usersTable > tbody tr:last-child')
             .append(`<td><button onclick="modalValues(this)" id="edit${j}" type="button" class="btn btn-primary editColor" data-toggle="modal" href="#tm">Edit</button></td>`)
@@ -167,6 +167,31 @@ async function deleteUser() {
         newUsers.push(users[i])
     }
     users = newUsers
+}
+
+async function newUser() {
+    let roles = ['USER']
+    let user = new User()
+    user.id = document.querySelector('#idN').value
+    user.login = document.querySelector('#loginN').value
+    user.firstName = document.querySelector('#FirstNameN').value
+    user.lastName = document.querySelector('#LastNameN').value
+    user.password = document.querySelector('#passwordN').value
+    user.roles = roles
+    let us2 = await fetch('/users', {
+        method: "PUT",
+        body: JSON.stringify(user),
+        headers: {"Content-Type": "application/json; charset=utf8"}
+    });
+    let us3 = await us2.json()
+    let userResp = new User()
+    userResp.id = us3.id
+    userResp.login = us3.login
+    userResp.firstName = us3.firstName
+    userResp.lastName = us3.lastName;
+    userResp.password = us3.password
+    userResp.roles = await us3.roles
+    users.push(userResp)
 }
 
 async function getIndex(buttonId, buttonsIds) {

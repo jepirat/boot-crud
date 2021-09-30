@@ -28,11 +28,20 @@ public class RestCont {
         return userPojos;
     }
 
+    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public UserProxy newUser(@RequestBody @Valid User user) {
+        user.getRole().forEach(role -> roleRepo.save(role));
+        user.setId(null);
+        userRepo.save(user);
+        System.out.println(user.getId());
+        System.out.println(user);
+        return new UserProxy(user);
+    }
+
     @RequestMapping(value = "", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
     public UserProxy patchUser(@RequestBody @Valid User user) {
         user.getRole().forEach(role -> roleRepo.save(role));
         userRepo.save(user);
-        System.out.println(user);
         return new UserProxy(user);
     }
 
