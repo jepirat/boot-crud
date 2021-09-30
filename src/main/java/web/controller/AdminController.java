@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import web.model.User;
 
 @Controller
-public class Test1Controller {
-    @GetMapping("/test1")
+public class AdminController {
+    @GetMapping("/")
+    public String toGo(Model model, Authentication authentication) {
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/admin")
     public String getTo(Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         model.addAttribute("currentUser", user);
-        return "test1";
+        return "admin";
     }
 }
