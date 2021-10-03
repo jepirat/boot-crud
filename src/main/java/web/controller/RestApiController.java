@@ -13,10 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import web.pojo.UserQuery;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/test")
@@ -26,21 +23,13 @@ public class RestApiController {
     @GetMapping
     public String getSession() throws MalformedURLException {
         String key;
+        int id = 3;
 
         UserQuery userQuery = new UserQuery();
+        userQuery.setId((long)3);
         userQuery.setName("James");
         userQuery.setLastName("Brown");
         userQuery.setAge((byte) 35);
-
-
-        UserQuery userQuery1 = new UserQuery();
-        userQuery1.setId(3L);
-        userQuery1.setName("Thomas");
-        userQuery1.setLastName("Shelby");
-        userQuery1.setAge((byte) 35);
-
-
-
 
         List<String> listSession = new ArrayList<>();
         RestTemplate templateGet = new RestTemplate();
@@ -48,7 +37,7 @@ public class RestApiController {
         responseEntityGet.getHeaders().get("Set-Cookie").stream().forEach(s -> listSession.add(s));
         String [] strings = listSession.get(0).split(";");
 
-
+        
         ResponseEntity<String> responseEntityPost;
         MultiValueMap<String, String> headersPOST = new LinkedMultiValueMap<>();
         headersPOST.add("Cookie", listSession.get(0));
@@ -57,9 +46,14 @@ public class RestApiController {
         RestTemplate restTemplatePost = new RestTemplate();
         restTemplatePost.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         HttpEntity<UserQuery> httpEntityPost = new HttpEntity<>(userQuery, headersPOST);
-        responseEntityPost = restTemplatePost.postForEntity("http://91.241.64.178:7081/api/users", httpEntityPost, String.class);
+        responseEntityPost = restTemplatePost.exchange("http://91.241.64.178:7081/api/users", HttpMethod.POST, httpEntityPost, String.class);
         key = responseEntityPost.getBody();
 
+
+        userQuery.setId((long) id);
+        userQuery.setName("Thomas");
+        userQuery.setLastName("Shelby");
+        userQuery.setAge((byte) 35);
 
 
 
@@ -67,12 +61,13 @@ public class RestApiController {
         MultiValueMap<String, String> headersPUT = new LinkedMultiValueMap<>();
         headersPUT.add("Cookie", listSession.get(0));
         headersPUT.add("Content-Type", "application/json");
-        headersPUT.add("method", "PUT");
         RestTemplate restTemplatePut = new RestTemplate();
         restTemplatePut.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        HttpEntity<UserQuery> httpEntityPut = new HttpEntity<>(userQuery1, headersPUT);
-        responseEntityPut = restTemplatePut.exchange("http://91.241.64.178:7081/api/users", HttpMethod.PUT, httpEntityPut, String.class);
+        HttpEntity<UserQuery> httpEntityPut = new HttpEntity<>(userQuery, headersPUT);
+        responseEntityPut = restTemplatePut.exchange("http://91.241.64.178:7081/api/users"
+                , HttpMethod.PUT, httpEntityPut, String.class);
         key += responseEntityPut.getBody();
+
 
 
 
