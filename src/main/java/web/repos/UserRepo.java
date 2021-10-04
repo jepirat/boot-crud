@@ -1,8 +1,16 @@
 package web.repos;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.domain.Sort;
 import web.model.User;
+
+import java.util.List;
 import java.util.Optional;
-public interface UserRepo extends JpaRepository<User, Long> {
+
+public interface UserRepo {
     User findByLogin(String login);
     Optional<User> findById(Long id);
+    List<User> findAll();
+    void save(User user);
+    void delete(User user);
+
 }
