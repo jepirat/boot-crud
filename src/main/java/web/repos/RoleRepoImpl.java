@@ -7,9 +7,9 @@ import java.util.Optional;
 
 @Repository
 public class RoleRepoImpl implements RoleRepo{
-    RoleService roleRepoJpa;
+    RoleRepoJpa roleRepoJpa;
 
-    public RoleRepoImpl(RoleService roleRepoJpa) {
+    public RoleRepoImpl(RoleRepoJpa roleRepoJpa) {
         this.roleRepoJpa = roleRepoJpa;
     }
 

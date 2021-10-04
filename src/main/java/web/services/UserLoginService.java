@@ -4,13 +4,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import web.repos.UserRepoIpa;
+import web.repos.UserRepoJpa;
 
 @Service
 public class UserLoginService implements UserDetailsService {
-    final UserRepoIpa userRepo;
+    final UserRepoJpa userRepo;
 
-    public UserLoginService(UserRepoIpa userRepo) {
+    public UserLoginService(UserRepoJpa userRepo) {
         this.userRepo = userRepo;
     }
 

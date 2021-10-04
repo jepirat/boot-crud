@@ -3,7 +3,6 @@ package web.services;
 import org.springframework.stereotype.Service;
 import web.model.User;
 import web.repos.UserRepo;
-import web.repos.UserRepoIpa;
 
 import java.util.List;
 import java.util.Optional;

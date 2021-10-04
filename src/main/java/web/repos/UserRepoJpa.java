@@ -5,7 +5,7 @@ import web.model.User;
 
 import java.util.List;
 import java.util.Optional;
-public interface UserRepoIpa extends JpaRepository<User, Long> {
+public interface UserRepoJpa extends JpaRepository<User, Long> {
     User findByLogin(String login);
     Optional<User> findById(Long id);
 }

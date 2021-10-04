@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface RoleRepo {
     Optional<Role> findById(Long id);
     void save(Role role);
+
 }

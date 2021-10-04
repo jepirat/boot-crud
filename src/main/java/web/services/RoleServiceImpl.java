@@ -2,18 +2,22 @@ package web.services;
 
 import org.springframework.stereotype.Service;
 import web.model.Role;
-import web.repos.RoleService;
+import web.repos.RoleRepoJpa;
 
 import java.util.Optional;
 
 @Service
-public class RoleServiceImpl {
-    RoleService roleRepo;
-
-    public RoleServiceImpl(RoleService roleRepo) {
+public class RoleServiceImpl implements RoleService {
+    RoleRepoJpa roleRepo;
+    public RoleServiceImpl(RoleRepoJpa roleRepo) {
         this.roleRepo = roleRepo;
     }
     public Optional<Role> findById(Long id) {
         return roleRepo.findById(id);
+    }
+
+    @Override
+    public void save(Role role) {
+       roleRepo.save(role);
     }
 }

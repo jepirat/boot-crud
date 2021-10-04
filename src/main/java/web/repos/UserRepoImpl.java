@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public class UserRepoImpl  implements UserRepo{
-    UserRepoIpa userRepoIpa;
+    UserRepoJpa userRepoIpa;
 
-    public UserRepoImpl(UserRepoIpa userRepoIpa) {
+    public UserRepoImpl(UserRepoJpa userRepoIpa) {
         this.userRepoIpa = userRepoIpa;
     }
 
