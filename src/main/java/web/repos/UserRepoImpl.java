@@ -1,14 +1,20 @@
 package web.repos;
 import org.springframework.stereotype.Repository;
+import web.model.Role;
 import web.model.User;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @Repository
 public class UserRepoImpl  implements UserRepo{
     UserRepoJpa userRepoIpa;
-
-    public UserRepoImpl(UserRepoJpa userRepoIpa) {
+    RoleRepo roleRepo;
+    public UserRepoImpl(UserRepoJpa userRepoIpa, RoleRepo roleRepo) {
         this.userRepoIpa = userRepoIpa;
+        this.roleRepo = roleRepo;
     }
 
     @Override
@@ -28,7 +34,28 @@ public class UserRepoImpl  implements UserRepo{
 
     @Override
     public void save(User user) {
-         userRepoIpa.save(user);
+        Set<Role> roleSet = new HashSet<>();
+        Set<Role> roles = user.getRole();
+        if (!roles.isEmpty()) {
+            roles.stream().forEach(role -> {
+                if (roleRepo.findByName(role.getName()) != null) {
+                    roleSet.add(roleRepo.findByName(role.getName()));
+                } else {
+                    roleRepo.save(role);
+                    roleSet.add(role);
+                }
+            });
+        } else if (!roles.isEmpty()) {
+            Role role = new Role("USER");
+            if (roleRepo.findByName(role.getName()) != null) {
+                roles.add(roleRepo.findByName(role.getName()));
+            } else {
+                roleRepo.save(role);
+                roles.add(role);
+            }
+        }
+        user.setRoles(roleSet);
+        userRepoIpa.save(user);
     }
 
     @Override

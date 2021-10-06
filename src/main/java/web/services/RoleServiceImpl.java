@@ -1,9 +1,7 @@
 package web.services;
-
 import org.springframework.stereotype.Service;
 import web.model.Role;
 import web.repos.RoleRepoJpa;
-
 import java.util.Optional;
 
 @Service
@@ -20,4 +18,11 @@ public class RoleServiceImpl implements RoleService {
     public void save(Role role) {
        roleRepo.save(role);
     }
+
+    @Override
+    public Role findByName(String name) {
+        return roleRepo.findByName(name);
+    }
+
+
 }

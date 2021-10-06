@@ -22,23 +22,32 @@ class User {
 };
 
 async function sendRequest(url) {
-    let row = ['id', 'login', 'firstName', 'lastName', 'password', 'roles']
+    let userRoles = []
+    let row = ['id', 'login', 'firstName', 'lastName', 'password', 'authorities']
     let response = await fetch(url)
     let js = await response.json()
+
+
 
     for (let j = 0; j < js.length; j++) {
         let fields = []
         for (let i = 0; i < row.length; i++) {
             fields.push(js[j][row[i]])
         }
+
+        for (let k = 0; k < js[j]['authorities'].length; k++) {
+            userRoles.push(fields[fields.length - 1][k]['name'])
+        }
+
         let user = new User()
         user.id = fields[0]
         user.login = fields[1]
         user.firstName = fields[2]
         user.lastName = fields[3]
         user.password = fields[4]
-        user.roles = fields[5]
+        user.roles = userRoles
         users.push(user)
+        userRoles = []
     }
     setRowsAndButtons()
     scanUsers()
@@ -105,6 +114,7 @@ async function modalValues1(button) {
 }
 
 async function editModal() {
+    let userRespRoles = []
     let roles = []
     let role
     if (document.querySelector('input[name="r1"]:checked').value !== '' && document.querySelector('input[name="r1"]:checked').value !== null) {
@@ -129,12 +139,17 @@ async function editModal() {
     let us3 = await us2.json()
     let userLength = users.length
     let userResp = new User()
+    for (let a = 0; a < us3['roles'].length; a++) {
+         userRespRoles.push(us3['authorities'][a]['name'])
+    }
+
+    console.log(await us3['authorities'][0]['name'])
     userResp.id = us3.id
     userResp.login = us3.login
     userResp.firstName = us3.firstName
     userResp.lastName = us3.lastName;
     userResp.password = us3.password
-    userResp.roles = await us3.roles
+    userResp.roles = userRespRoles
     for (let i = 0; i < userLength; i++) {
         if (users[i].id === us3.id) {
             users[i] = userResp
@@ -197,7 +212,6 @@ async function newUser() {
 async function getIndex(buttonId, buttonsIds) {
     let length = buttonsIds.length
     let bId = await buttonId.id
-    console.log(buttonsIdsEdit[0])
     for (let i = 0; i < length; i++) {
         if (bId === buttonsIds[i]) {
             return i

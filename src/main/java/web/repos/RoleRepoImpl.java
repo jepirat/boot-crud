@@ -22,4 +22,11 @@ public class RoleRepoImpl implements RoleRepo{
     public void save(Role role) {
        roleRepoJpa.save(role);
     }
+
+    @Override
+    public Role findByName(String name) {
+        return roleRepoJpa.findByName(name);
+    }
+
+
 }
