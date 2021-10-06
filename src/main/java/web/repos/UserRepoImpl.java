@@ -2,7 +2,6 @@ package web.repos;
 import org.springframework.stereotype.Repository;
 import web.model.Role;
 import web.model.User;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;

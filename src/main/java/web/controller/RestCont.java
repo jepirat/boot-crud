@@ -5,8 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
-import web.pojo.UserProxy;
-import web.services.RoleService;
 import web.services.UserService;
 
 import javax.validation.Valid;

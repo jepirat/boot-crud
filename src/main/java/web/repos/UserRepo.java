@@ -1,8 +1,5 @@
 package web.repos;
-
-import org.springframework.data.domain.Sort;
 import web.model.User;
-
 import java.util.List;
 import java.util.Optional;
 
