@@ -39,8 +39,8 @@ public class RestCont {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> delete(@PathVariable("id") long id) {
+    public ResponseEntity<Long> delete(@PathVariable("id") long id) {
         userService.delete(userService.findById(id).get());
-        return new ResponseEntity<User>(userService.findById(id).get(), HttpStatus.OK);
+        return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
 }

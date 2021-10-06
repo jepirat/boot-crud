@@ -89,6 +89,8 @@ async function setRowsAndButtons() {
         buttonsIdsEdit.push('edit' + j)
         buttonsIdsDelete.push('delete' + j)
     }
+    console.log(buttonsIdsEdit)
+    console.log(buttonsIdsDelete)
 }
 
 async function modalValues(button) {
@@ -144,14 +146,14 @@ async function editModal() {
     }
 
     console.log(await us3['authorities'][0]['name'])
-    userResp.id = us3.id
+    userResp.id = us3['id']
     userResp.login = us3.login
     userResp.firstName = us3.firstName
     userResp.lastName = us3.lastName;
     userResp.password = us3.password
     userResp.roles = userRespRoles
     for (let i = 0; i < userLength; i++) {
-        if (users[i].id === us3.id) {
+        if (users[i].id === us3['id']) {
             users[i] = userResp
         }
     }
@@ -166,25 +168,24 @@ async function deleteUser() {
     let usersLength = users.length
    let userId = document.querySelector('#id1').value
     let url = `/users/${userId}`
-    let user = await fetch(url, {method: 'DELETE'})
-    let user1 = await user.json()
-    let userResp1 = new User()
-    userResp1.id = user1.id
-    userResp1.login = user1.login
-    userResp1.firstName = user1.firstName
-    userResp1.lastName = user1.lastName;
-    userResp1.password = user1.password
-    userResp1.roles = await user1.roles
+    let id = await fetch(url, {method: 'DELETE'})
+    let id1 = await id.json()
+    console.log(id1)
+
     for (let i = 0; i < usersLength; i++) {
-        if (users[i].id === userResp1.id) {
+        if (users[i].id === id1) {
             continue
         }
         newUsers.push(users[i])
     }
     users = newUsers
+    buttonsIdsEdit = []
+    buttonsIdsDelete = []
+    $('#tm1').modal('hide');
 }
 
 async function newUser() {
+    let userRespRoles = []
     let roles = ['USER']
     let user = new User()
     user.id = document.querySelector('#idN').value
@@ -200,13 +201,21 @@ async function newUser() {
     });
     let us3 = await us2.json()
     let userResp = new User()
-    userResp.id = us3.id
+
+    for (let a = 0; a < us3['roles'].length; a++) {
+        userRespRoles.push(us3['authorities'][a]['name'])
+    }
+    userResp.id = us3['id']
+    console.log(us3['id'])
     userResp.login = us3.login
     userResp.firstName = us3.firstName
     userResp.lastName = us3.lastName;
     userResp.password = us3.password
-    userResp.roles = await us3.roles
+    userResp.roles = userRespRoles
     users.push(userResp)
+    buttonsIdsEdit = []
+    buttonsIdsDelete = []
+
 }
 
 async function getIndex(buttonId, buttonsIds) {
