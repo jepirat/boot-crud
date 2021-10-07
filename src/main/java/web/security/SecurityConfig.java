@@ -1,6 +1,6 @@
 package web.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,17 +13,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import web.services.UserLoginService;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    DataSource dataSource;
+    final UserLoginService userService;
 
-    @Autowired
-    UserLoginService userService;
+    public SecurityConfig(UserLoginService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

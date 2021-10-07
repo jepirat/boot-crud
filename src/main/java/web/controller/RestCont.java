@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.services.UserService;
-
 import javax.validation.Valid;
 import java.util.*;
 

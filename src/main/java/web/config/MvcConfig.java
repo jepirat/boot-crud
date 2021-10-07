@@ -28,7 +28,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public SpringSecurityDialect springSecurityDialect(){
 //        Set<Role> roleSet = new HashSet<>();
 //        roleSet.add(new Role("ADMIN"));
-//        User user = new User("admin1", "a", "a", "a", roleSet);
+//        User user = new User("admin", "a", "a", "a", roleSet);
 //        userService.save(user);
         return new SpringSecurityDialect();
     }

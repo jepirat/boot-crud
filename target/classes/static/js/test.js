@@ -27,8 +27,6 @@ async function sendRequest(url) {
     let response = await fetch(url)
     let js = await response.json()
 
-
-
     for (let j = 0; j < js.length; j++) {
         let fields = []
         for (let i = 0; i < row.length; i++) {
@@ -69,7 +67,6 @@ async function scanUsers() {
     }
 }
 
-
 async function setRowsAndButtons() {
     await sendRequest
     let row = ['id', 'login', 'firstName', 'lastName', 'password', 'roles']
@@ -89,8 +86,6 @@ async function setRowsAndButtons() {
         buttonsIdsEdit.push('edit' + j)
         buttonsIdsDelete.push('delete' + j)
     }
-    console.log(buttonsIdsEdit)
-    console.log(buttonsIdsDelete)
 }
 
 async function modalValues(button) {
@@ -133,6 +128,21 @@ async function editModal() {
     user.lastName = document.querySelector('#LastName').value
     user.password = document.querySelector('#password').value
     user.roles = roles
+
+    let usersLength = users.length
+    let userFromUsers = await getUserFromUsers(user.id)
+    let rolesFromUserFromArr = await userFromUsers['roles']
+
+    if (role !== 'USER') {
+        for (let f = 0; f < rolesFromUserFromArr.length; f++) {
+            if (rolesFromUserFromArr[f] !== role) {
+                roles.push(rolesFromUserFromArr[f])
+            }
+        }
+    }
+
+    console.log(roles)
+
     let us2 = await fetch('/users', {
         method: "PATCH",
         body: JSON.stringify(user),
@@ -145,7 +155,6 @@ async function editModal() {
          userRespRoles.push(us3['authorities'][a]['name'])
     }
 
-    console.log(await us3['authorities'][0]['name'])
     userResp.id = us3['id']
     userResp.login = us3.login
     userResp.firstName = us3.firstName
@@ -170,7 +179,6 @@ async function deleteUser() {
     let url = `/users/${userId}`
     let id = await fetch(url, {method: 'DELETE'})
     let id1 = await id.json()
-    console.log(id1)
 
     for (let i = 0; i < usersLength; i++) {
         if (users[i].id === id1) {
@@ -206,7 +214,6 @@ async function newUser() {
         userRespRoles.push(us3['authorities'][a]['name'])
     }
     userResp.id = us3['id']
-    console.log(us3['id'])
     userResp.login = us3.login
     userResp.firstName = us3.firstName
     userResp.lastName = us3.lastName;
@@ -227,4 +234,17 @@ async function getIndex(buttonId, buttonsIds) {
         }
     }
     return 'error'
+}
+
+async function getUserFromUsers(id) {
+    console.log(id)
+    let usersLength = users.length
+    let userFromUsers
+    for (let i = 0; i < usersLength; i++) {
+        if (users[i].id == id) {
+            userFromUsers = users[i]
+        }
+        console.log(users[i])
+    }
+    return userFromUsers
 }
