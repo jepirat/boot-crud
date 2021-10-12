@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import web.model.Role;
 import web.model.User;
+import web.repos.RoleRepo;
 import web.services.UserService;
 
 import java.util.HashSet;
@@ -19,6 +20,8 @@ import java.util.Set;
 public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     UserService userService;
+    @Autowired
+    RoleRepo roleRepo;
 
     public void addViewControllers(ViewControllerRegistry viewControllerRegistry) {
         viewControllerRegistry.addViewController("/login").setViewName("login");
@@ -27,7 +30,9 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public SpringSecurityDialect springSecurityDialect(){
 //        Set<Role> roleSet = new HashSet<>();
-//        roleSet.add(new Role("ADMIN"));
+//        Role role = new Role("ADMIN");
+//        roleRepo.save(role);
+//        roleSet.add(role);
 //        User user = new User("admin", "a", "a", "a", roleSet);
 //        userService.save(user);
         return new SpringSecurityDialect();

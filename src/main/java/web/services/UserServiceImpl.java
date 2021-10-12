@@ -5,6 +5,7 @@ import web.model.Role;
 import web.model.User;
 import web.repos.RoleRepo;
 import web.repos.UserRepo;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -35,23 +36,35 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-        Set<Role> rolesToSave = new HashSet<>();
-        Set<Role> rolesFromUser = user.getRole();
-        List<Role> rolesFromDb = roleRepo.findAll();
-            rolesFromUser.forEach(role ->
-            {if (rolesFromDb.contains(role)) {
-                rolesToSave.add(rolesFromDb.get(rolesFromDb.indexOf(role)));
-            } if (!rolesFromDb.contains(role)) {
-                rolesFromUser.forEach(role1 ->
-                {roleRepo.save(role1);
-                rolesToSave.add(role1);});
-            }
-            });
-            user.setRoles(rolesToSave);
+        Set<Role> rolesDefault = new HashSet<>();
+        if (roleRepo.findByName("USER") != null) {
+            rolesDefault.add(roleRepo.findByName("USER"));
             userRepo.save(user);
+        } if (roleRepo.findByName("USER") == null) {
+            rolesDefault.forEach(role -> roleRepo.save(role));
+        }
+        user.setRoles(rolesDefault);
+        userRepo.save(user);
     }
+
     @Override
     public void delete(User user) {
        userRepo.delete(user);
+    }
+
+    @Override
+    public void update(User user) {
+        Set<Role> roleSet = new HashSet<>();
+        user.getRole().forEach(role -> {
+                    if (roleRepo.findByName(role.getName()) != null) {
+                        roleSet.add(roleRepo.findByName(role.getName()));
+                    }
+                    if (roleRepo.findByName(role.getName()) == null) {
+                        roleRepo.save(role);
+                        roleSet.add(role);
+                    }
+                });
+        user.setRoles(roleSet);
+        userRepo.save(user);
     }
 }

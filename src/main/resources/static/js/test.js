@@ -141,7 +141,7 @@ async function editModal() {
     }
 
     let us2 = await fetch('/users', {
-        method: "PATCH",
+        method: "PUT",
         body: JSON.stringify(user),
         headers: {"Content-Type": "application/json; charset=utf8"}
     });
@@ -200,7 +200,7 @@ async function newUser() {
     user.password = document.querySelector('#passwordN').value
     user.roles = roles
     let us2 = await fetch('/users', {
-        method: "PUT",
+        method: "POST",
         body: JSON.stringify(user),
         headers: {"Content-Type": "application/json; charset=utf8"}
     });

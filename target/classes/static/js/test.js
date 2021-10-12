@@ -129,7 +129,6 @@ async function editModal() {
     user.password = document.querySelector('#password').value
     user.roles = roles
 
-    let usersLength = users.length
     let userFromUsers = await getUserFromUsers(user.id)
     let rolesFromUserFromArr = await userFromUsers['roles']
 
@@ -141,10 +140,8 @@ async function editModal() {
         }
     }
 
-    console.log(roles)
-
     let us2 = await fetch('/users', {
-        method: "PATCH",
+        method: "PUT",
         body: JSON.stringify(user),
         headers: {"Content-Type": "application/json; charset=utf8"}
     });
@@ -203,7 +200,7 @@ async function newUser() {
     user.password = document.querySelector('#passwordN').value
     user.roles = roles
     let us2 = await fetch('/users', {
-        method: "PUT",
+        method: "POST",
         body: JSON.stringify(user),
         headers: {"Content-Type": "application/json; charset=utf8"}
     });
@@ -237,14 +234,12 @@ async function getIndex(buttonId, buttonsIds) {
 }
 
 async function getUserFromUsers(id) {
-    console.log(id)
     let usersLength = users.length
     let userFromUsers
     for (let i = 0; i < usersLength; i++) {
         if (users[i].id == id) {
             userFromUsers = users[i]
         }
-        console.log(users[i])
     }
     return userFromUsers
 }
